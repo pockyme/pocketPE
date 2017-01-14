@@ -156,11 +156,9 @@ while getopts "::t:oj:srcdlxzff:" OPTION; do
 	esac
 done
 
-#TODO Uncomment this when php-leveldb supports PHP7 properly
-#if [ $(gcc -dumpversion | sed -e 's/\.\([0-9][0-9]\)/\1/g' -e 's/\.\([0-9]\)/0\1/g' -e 's/^[0-9]\{3,4\}$/&00/') -gt 40800 ]; then
-	#COMPILE_LEVELDB="yes"
-#fi
-COMPILE_LEVELDB="no"
+if [ $(gcc -dumpversion | sed -e 's/\.\([0-9][0-9]\)/\1/g' -e 's/\.\([0-9]\)/0\1/g' -e 's/^[0-9]\{3,4\}$/&00/') -gt 40800 ]; then
+	COMPILE_LEVELDB="yes"
+fi
 
 GMP_ABI=""
 TOOLCHAIN_PREFIX=""
@@ -668,10 +666,10 @@ echo " done!"
 
 if [ "$COMPILE_LEVELDB" == "yes" ]; then
 	#LevelDB
-	echo -n "[LevelDB] downloading $LEVELDB_VERSION..."
-	download_file "https://github.com/PocketMine/leveldb/archive/$LEVELDB_VERSION.tar.gz" | tar -zx >> "$DIR/install.log" 2>&1
-	#download_file "https://github.com/Mojang/leveldb-mcpe/archive/$LEVELDB_VERSION.tar.gz" | tar -zx >> "$DIR/install.log" 2>&1
-	mv leveldb-$LEVELDB_VERSION leveldb
+	echo -n "[LevelDB] downloading..."
+	#download_file "https://github.com/PocketMine/leveldb/archive/$LEVELDB_VERSION.tar.gz" | tar -zx >> "$DIR/install.log" 2>&1
+	download_file "https://github.com/Mojang/leveldb-mcpe/archive/master.tar.gz" | tar -zx >> "$DIR/install.log" 2>&1
+	mv leveldb-master leveldb
 	echo -n " checking..."
 	cd leveldb
 	echo -n " compiling..."
@@ -806,8 +804,8 @@ if [ "$COMPILE_LEVELDB" == "yes" ]; then
 	#PHP LevelDB
 	echo -n "[PHP LevelDB] downloading $PHPLEVELDB_VERSION..."
 	#download_file "http://pecl.php.net/get/leveldb-$PHPLEVELDB_VERSION.tgz" | tar -zx >> "$DIR/install.log" 2>&1
-	download_file "https://github.com/PocketMine/php-leveldb/archive/$PHPLEVELDB_VERSION.tar.gz" | tar -zx >> "$DIR/install.log" 2>&1
-	mv php-leveldb-$PHPLEVELDB_VERSION "$DIR/install_data/php/ext/leveldb"
+	download_file "https://github.com/reeze/php-leveldb/archive/PHP7.tar.gz" | tar -zx >> "$DIR/install.log" 2>&1
+	mv php-leveldb-PHP7 "$DIR/install_data/php/ext/leveldb"
 	echo " done!"
 	HAS_LEVELDB=--with-leveldb="$DIR/bin/php7"
 else
