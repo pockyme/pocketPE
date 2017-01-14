@@ -669,7 +669,7 @@ if [ "$COMPILE_LEVELDB" == "yes" ]; then
 	echo -n "[LevelDB] downloading..."
 	#download_file "https://github.com/PocketMine/leveldb/archive/$LEVELDB_VERSION.tar.gz" | tar -zx >> "$DIR/install.log" 2>&1
 	download_file "https://github.com/Mojang/leveldb-mcpe/archive/master.tar.gz" | tar -zx >> "$DIR/install.log" 2>&1
-	mv leveldb-master leveldb
+	mv leveldb-mcpe-master leveldb
 	echo -n " checking..."
 	cd leveldb
 	echo -n " compiling..."
