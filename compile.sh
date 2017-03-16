@@ -749,17 +749,6 @@ echo " done!"
 
 # PECL libraries
 
-if [[ "$DO_STATIC" != "yes" ]] && [[ "$COMPILE_DEBUG" == "yes" ]]; then
-	#xdebug
-	echo -n "[PHP xdebug] downloading $XDEBUG_VERSION..."
-	download_file "http://pecl.php.net/get/xdebug-$XDEBUG_VERSION.tgz" | tar -zx >> "$DIR/install.log" 2>&1
-	mv xdebug-$XDEBUG_VERSION "$DIR/install_data/php/ext/xdebug"
-	echo " done!"
-	HAS_XDEBUG="--enable-xdebug=shared"
-else
-	HAS_XDEBUG=""
-fi
-
 #TODO Uncomment this when it's ready for PHP7
 #if [ "$COMPILE_DEBUG" == "yes" ]; then
 #	#profiler
@@ -898,7 +887,6 @@ $HAVE_NCURSES \
 $HAVE_READLINE \
 $HAS_LEVELDB \
 $HAS_POCKETMINE \
-$HAS_XDEBUG \
 $HAS_PROFILER \
 $HAS_DEBUG \
 $HAS_POCKETMINE_CHUNKUTILS \
@@ -977,6 +965,22 @@ if [[ "$(uname -s)" == "Darwin" ]] && [[ "$IS_CROSSCOMPILE" != "yes" ]]; then
 	set -e
 fi
 
+
+if [[ "$DO_STATIC" != "yes" ]] && [[ "$COMPILE_DEBUG" == "yes" ]]; then
+	#xdebug must be compiled separately
+	echo -n "[PHP xdebug] downloading $XDEBUG_VERSION..."
+	download_file "http://pecl.php.net/get/xdebug-$XDEBUG_VERSION.tgz" | tar -zx >> "$DIR/install.log" 2>&1
+	mv xdebug-$XDEBUG_VERSION "$DIR/install_data/php/ext/xdebug"
+	echo -n " compiling..."
+	cd install_data/php/ext/xdebug
+	$DIR/bin/php7/bin/phpize >> "$DIR/install.log" 2>&1
+	./configure --prefix="$DIR/bin/php7" >> "$DIR/install.log" 2>&1
+	make -j $THREADS >> "$DIR/install.log" 2>&1
+	echo -n " installing..."
+	make install >> "$DIR/install.log" 2>&1
+	echo " done!"
+fi
+
 echo -n " generating php.ini..."
 trap - DEBUG
 TIMEZONE=$(date +%Z)
@@ -993,7 +997,11 @@ else
 fi
 
 if [ "$IS_CROSSCOMPILE" != "yes" ] && [ "$DO_STATIC" == "no" ]; then
-	echo ";zend_extension=xdebug.so" >> "$DIR/bin/php7/bin/php.ini"
+	if [ "$COMPILE_DEBUG" == "yes" ]; then
+		echo "zend_extension=xdebug.so" >> "$DIR/bin/php7/bin/php.ini"
+	else
+		echo ";zend_extension=xdebug.so" >> "$DIR/bin/php7/bin/php.ini"
+	fi
 	echo "zend_extension=opcache.so" >> "$DIR/bin/php7/bin/php.ini"
 	echo "opcache.enable=1" >> "$DIR/bin/php7/bin/php.ini"
 	echo "opcache.enable_cli=1" >> "$DIR/bin/php7/bin/php.ini"
