@@ -7,9 +7,8 @@ RUN chown -R pmmp:pmmp /home/pmmp/
 
 USER pmmp
 WORKDIR /home/pmmp/
-RUN wget https://raw.githubusercontent.com/pmmp/php-build-scripts/master/installer.sh
-RUN chmod 0775 installer.sh
-RUN ./installer.sh
+RUN curl -sL https://get.pmmp.io | bash -s -
+RUN chmod 0775 start.sh
 
 EXPOSE 19132
 
