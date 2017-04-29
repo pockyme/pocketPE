@@ -1,6 +1,5 @@
 FROM php:alpine
 
-RUN useradd pmmp
 RUN mkdir /home/pmmp/
 COPY installer.sh /home/pmmp/
 RUN chown -R pmmp:pmmp /home/pmmp/
