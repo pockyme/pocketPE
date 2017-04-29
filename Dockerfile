@@ -1,5 +1,6 @@
-FROM php:alpine
+FROM php:7
 
+RUN useradd pmmp
 RUN mkdir /home/pmmp/
 COPY installer.sh /home/pmmp/
 RUN chown -R pmmp:pmmp /home/pmmp/
@@ -8,8 +9,10 @@ USER pmmp
 WORKDIR /home/pmmp/
 
 RUN chmod 755 installer.sh
-
 RUN bash installer.sh
+
+RUN chmod 755 compile.sh
+RUN bash compile.sh
 
 EXPOSE 19132
 
