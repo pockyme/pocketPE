@@ -9,7 +9,7 @@ USER pmmp
 WORKDIR /home/pmmp/
 RUN wget https://raw.githubusercontent.com/pmmp/php-build-scripts/master/installer.sh
 RUN chmod 0775 installer.sh
-RUN bash installer.sh
+RUN ./installer.sh
 
 EXPOSE 19132
 
