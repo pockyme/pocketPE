@@ -1,10 +1,12 @@
 FROM ubuntu
 
-RUN mkdir -p /home/pmmp/
 RUN apt-get -y update
 RUN apt-get -y install wget curl
-RUN wget -O installer.sh https://raw.githubusercontent.com/pmmp/php-build-scripts/master/installer.sh -P /home/pmmp/
 RUN useradd pmmp
+RUN mkdir /home/pmmp
+
+RUN wget -O installer.sh https://raw.githubusercontent.com/pmmp/php-build-scripts/master/installer.sh -P /home/pmmp/
+
 RUN chown -R pmmp:pmmp /home/pmmp/
 
 USER pmmp
