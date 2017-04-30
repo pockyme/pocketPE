@@ -1,14 +1,14 @@
 FROM ubuntu
-RUN apt-get update -y
+RUN apt-get -y update
+RUN apt-get -y install wget curl
 RUN useradd pmmp
 RUN mkdir /home/pmmp/
-ADD https://raw.githubusercontent.com/pmmp/php-build-scripts/master/installer.sh /home/pmmp/installer.sh
 RUN chown -R pmmp:pmmp /home/pmmp/
 
 USER pmmp
 WORKDIR /home/pmmp/
-
-RUN chmod 755 installer.sh
+RUN wget https://raw.githubusercontent.com/pmmp/php-build-scripts/master/installer.sh
+RUN chmod +x installer.sh
 
 RUN bash installer.sh
 RUN bash -u -f installer.sh
