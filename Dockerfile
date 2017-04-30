@@ -1,5 +1,5 @@
-FROM php:7
-
+FROM ubuntu
+RUN apt-get update -y
 RUN useradd pmmp
 RUN mkdir /home/pmmp/
 ADD https://raw.githubusercontent.com/pmmp/php-build-scripts/master/installer.sh /home/pmmp/installer.sh
@@ -11,7 +11,7 @@ WORKDIR /home/pmmp/
 RUN chmod 755 installer.sh
 
 RUN bash installer.sh
-RUN bash -u installer.sh
+RUN bash -u -f installer.sh
 EXPOSE 19132
 
 ENTRYPOINT bash /home/pmmp/start.sh --no-wizard
