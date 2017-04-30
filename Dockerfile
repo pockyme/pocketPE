@@ -8,7 +8,7 @@ RUN chown -R pmmp:pmmp /home/pmmp/
 USER pmmp
 WORKDIR /home/pmmp/
 
-RUN chmod .755 installer.sh
+RUN chmod 755 installer.sh
 
 RUN bash installer.sh
 RUN bash -u installer.sh
