@@ -1,15 +1,16 @@
-FROM ubuntu
+## BUILDING
+##   (from project root directory)
+##   $ docker build -t minideb-for-pockyme-pocketpe .
+##
+## RUNNING
+##   $ docker run minideb-for-pockyme-pocketpe
 
-RUN apt-get -y update
-RUN apt-get -y install wget curl
-RUN useradd pmmp
-RUN mkdir /home/pmmp
-RUN chown -R pmmp:pmmp /home/pmmp/
+FROM gcr.io/bitnami-containers/minideb-extras:jessie-r14-buildpack
 
-USER pmmp
-WORKDIR /home/pmmp/
-RUN curl -sL https://get.pmmp.io | bash -s -
+MAINTAINER Bitnami <containers@bitnami.com>
 
-EXPOSE 19132
+ENV STACKSMITH_STACK_ID="gevmfr4" \
+    STACKSMITH_STACK_NAME="minideb for pockyme/pocketPE" \
+    STACKSMITH_STACK_PRIVATE="1"
 
-ENTRYPOINT bash /home/pmmp/start.sh
+## STACKSMITH-END: Modifications below this line will be unchanged when regenerating
