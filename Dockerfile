@@ -12,4 +12,4 @@ RUN curl -sL https://get.pmmp.io | bash -s -
 
 EXPOSE 19132
 
-ENTRYPOINT bash /home/pmmp/start.sh --no-wizard
+ENTRYPOINT bash /home/pmmp/start.sh
